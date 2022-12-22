@@ -53,14 +53,14 @@ app.post("/startImgixSession", upload.single("pic"), async (req, res) => {
     });
 
   //Everything I need for the post function.
-  console.log("Presigned URL is:");
-  console.log(final.data);
-  console.log("Status is:");
-  console.log(final.data.attributes.status);
-  console.log("filetype is:");
-  console.log(file.mimetype);
-  console.log("AWS url is");
-  console.log(final.data.attributes.url);
+  // console.log("Presigned URL is:");
+  // console.log(final.data);
+  // console.log("Status is:");
+  // console.log(final.data.attributes.status);
+  // console.log("filetype is:");
+  // console.log(file.mimetype);
+  // console.log("AWS url is");
+  // console.log(final.data.attributes.url);
 
   var configTwo = {
     method: "put",
@@ -81,9 +81,9 @@ app.post("/startImgixSession", upload.single("pic"), async (req, res) => {
     });
 
   let trueFinal = {
-    allData: final,
-    theBufferReturned: req.file.buffer,
-    theFileType: file.mimetype,
+    sessionIdBackend: final.data.attributes.id,
+    sessionStatusBackend: final.data.attributes.status,
+    sessionPresignedUrlBackend: final.data.attributes.url,
   };
   return res.status(200).send(trueFinal);
 });
