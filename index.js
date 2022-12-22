@@ -52,6 +52,34 @@ app.post("/startImgixSession", upload.single("pic"), async (req, res) => {
       return error;
     });
 
+  //Everything I need for the post function.
+  console.log("Presigned URL is:");
+  console.log(final.data);
+  console.log("Status is:");
+  console.log(final.data.attributes.status);
+  console.log("filetype is:");
+  console.log(file.mimetype);
+  console.log("AWS url is");
+  console.log(final.data.attributes.url);
+
+  var configTwo = {
+    method: "put",
+    url: final.data.attributes.url,
+    headers: {
+      "Content-Type": file.mimetype,
+    },
+    data: req.file.buffer,
+  };
+
+  let finalPost = await axios(configTwo)
+    .then(function (response) {
+      console.log("Axios call in /postSession");
+      console.log(JSON.stringify(response.data));
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+
   let trueFinal = {
     allData: final,
     theBufferReturned: req.file.buffer,
