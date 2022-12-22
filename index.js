@@ -17,8 +17,7 @@ app.use(
     parameterLimit: 50000,
   })
 );
-//
-// multer
+
 const memoStorage = multer.memoryStorage();
 const upload = multer({ memoStorage });
 const port = 5001;
@@ -52,16 +51,6 @@ app.post("/startImgixSession", upload.single("pic"), async (req, res) => {
       return error;
     });
 
-  //Everything I need for the post function.
-  // console.log("Presigned URL is:");
-  // console.log(final.data);
-  // console.log("Status is:");
-  // console.log(final.data.attributes.status);
-  // console.log("filetype is:");
-  // console.log(file.mimetype);
-  // console.log("AWS url is");
-  // console.log(final.data.attributes.url);
-
   var configTwo = {
     method: "put",
     url: final.data.attributes.url,
@@ -74,7 +63,6 @@ app.post("/startImgixSession", upload.single("pic"), async (req, res) => {
   let finalPost = await axios(configTwo)
     .then(function (response) {
       console.log("Axios call in /postSession");
-      console.log(JSON.stringify(response.data));
     })
     .catch(function (error) {
       console.log(error);
@@ -86,32 +74,6 @@ app.post("/startImgixSession", upload.single("pic"), async (req, res) => {
     sessionPresignedUrlBackend: final.data.attributes.url,
   };
   return res.status(200).send(trueFinal);
-});
-
-app.post("/postSession", upload.single("pic"), async (req, res) => {
-  let fileBufferData = req.file.buffer;
-  let theAWSurl = req.body.awsURL;
-  let file = req.file;
-
-  var config = {
-    method: "put",
-    url: theAWSurl,
-    headers: {
-      "Content-Type": file.mimetype,
-    },
-    data: fileBufferData,
-  };
-
-  let finalPost = await axios(config)
-    .then(function (response) {
-      console.log("Axios call in /postSession");
-      console.log(JSON.stringify(response.data));
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-
-  return res.status(200).send(finalPost);
 });
 
 //Checks status of an imgix session.
