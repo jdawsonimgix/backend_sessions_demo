@@ -29,6 +29,7 @@ app.get("/", (req, res) => {
 //Start a session.
 app.post("/startImgixSession", upload.single("pic"), async (req, res) => {
   const file = req.file;
+  //console.log(file.originalname);
 
   var config = {
     method: "post",
@@ -72,6 +73,7 @@ app.post("/startImgixSession", upload.single("pic"), async (req, res) => {
     sessionIdBackend: final.data.attributes.id,
     sessionStatusBackend: final.data.attributes.status,
     sessionPresignedUrlBackend: final.data.attributes.url,
+    sessionFilenameBackend: file.originalname,
   };
   return res.status(200).send(trueFinal);
 });
